@@ -41,16 +41,60 @@ class ActionHandler {
     func processContinuousCommand(_ text: String) -> Bool {
         let commandText = text.lowercased()
         
-        for cmd in commands {
-            for trigger in cmd.voiceTriggers {
-                if commandText.contains(trigger.lowercased()) {
-                    print("\n✅ [COMANDO ACIONADO]: \(trigger)")
-                    executeAction(cmd)
+        // 1. Verificação Estrita Dinâmica para Janelas Específicas do Preview
+        let dynamicPrefixes = ["file ", "ficheiro ", "preview ", "documento "]
+        for prefix in dynamicPrefixes {
+            if commandText.hasPrefix(prefix) {
+                let fileName = commandText.dropFirst(prefix.count).trimmingCharacters(in: .whitespaces)
+                if !fileName.isEmpty {
+                    print("\n✅ [COMANDO DINÂMICO]: Foco no documento -> \(fileName)")
+                    let script = """
+                    tell application "System Events"
+                        tell process "Preview"
+                            set frontmost to true
+                            repeat with w in windows
+                                if (name of w as string) contains "\(fileName)" then
+                                    set value of attribute "AXMain" of w to true
+                                    perform action "AXRaise" of w
+                                    return
+                                end if
+                            end repeat
+                        end tell
+                    end tell
+                    """
+                    executeAppleScriptDirectly(script)
                     return true
                 }
             }
         }
+        
+        // 2. Comandos estáticos do JSON — SEMPRE escolher o trigger MAIS LONGO que faz match
+        //    para evitar que "chrome" dispare antes de "close chrome"
+        var bestMatch: (cmd: CommandDefinition, trigger: String)?
+        
+        for cmd in commands {
+            for trigger in cmd.voiceTriggers {
+                if commandText.contains(trigger.lowercased()) {
+                    if bestMatch == nil || trigger.count > bestMatch!.trigger.count {
+                        bestMatch = (cmd, trigger)
+                    }
+                }
+            }
+        }
+        
+        if let match = bestMatch {
+            print("\n✅ [COMANDO ACIONADO]: \(match.trigger)")
+            executeAction(match.cmd)
+            return true
+        }
+        
         return false
+    }
+    
+    private func executeAppleScriptDirectly(_ source: String) {
+        DispatchQueue.main.async {
+            self.runAppleScript(source)
+        }
     }
     
     private func executeAction(_ cmd: CommandDefinition) {
@@ -81,7 +125,13 @@ class ActionHandler {
                         ($0.bundleURL?.lastPathComponent.lowercased() ?? "").contains(appName) ||
                         appName.contains($0.localizedName?.lowercased() ?? "")
                     }) {
-                        app.terminate() // Fecho nativo gracioso, sem falhar no Sandbox!
+                        app.forceTerminate() // Esmaga o processo ao nível do kernel (Ignora "Unsaved Changes" ou bloqueios nativos)
+                    } else {
+                        // Fallback absoluto via shell Unix
+                        let task = Process()
+                        task.launchPath = "/usr/bin/killall"
+                        task.arguments = [targetApp]
+                        task.launch()
                     }
                 }
             }
@@ -189,6 +239,16 @@ class ActionHandler {
             
         case "media_mute":
             simulateMediaKey(key: 7) // NX_KEYTYPE_MUTE
+            
+        case "print_page":
+            // Simula Cmd+P na app em primeiro plano
+            let src = CGEventSource(stateID: .hidSystemState)
+            let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x23, keyDown: true) // 0x23 = 'p'
+            let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x23, keyDown: false)
+            keyDown?.flags = .maskCommand
+            keyUp?.flags = .maskCommand
+            keyDown?.post(tap: .cghidEventTap)
+            keyUp?.post(tap: .cghidEventTap)
             
         default:
             print("Ação desconhecida ou não implementada no Swift: \(cmd.action)")

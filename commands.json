@@ -26,13 +26,28 @@
     "target": "https://webmail.tecnico.ulisboa.pt/rc/?_task=mail&_mbox=INBOX"
   },
   {
+    "voice_triggers": ["close ist mail"],
+    "action": "safari_close_tab",
+    "target": "webmail.tecnico.ulisboa.pt"
+  },
+  {
     "voice_triggers": ["calendar", "open calendar"],
     "action": "open_app",
     "target": "Calendar"
   },
   {
-    "voice_triggers": ["safari"],
+    "voice_triggers": ["close calendar"],
+    "action": "close_app",
+    "target": "Calendar"
+  },
+  {
+    "voice_triggers": ["safari", "open safari"],
     "action": "open_app",
+    "target": "Safari"
+  },
+  {
+    "voice_triggers": ["close safari"],
+    "action": "close_app",
     "target": "Safari"
   },
   {
@@ -41,17 +56,27 @@
     "target": ""
   },
   {
-    "voice_triggers": ["chrome"],
+    "voice_triggers": ["chrome", "open chrome"],
     "action": "open_app",
     "target": "Google Chrome"
   },
   {
-    "voice_triggers": ["antigravity"],
+    "voice_triggers": ["close chrome"],
+    "action": "close_app",
+    "target": "Google Chrome"
+  },
+  {
+    "voice_triggers": ["antigravity", "open antigravity"],
     "action": "open_app",
     "target": "Antigravity"
   },
   {
-    "voice_triggers": ["windows"],
+    "voice_triggers": ["close antigravity"],
+    "action": "close_app",
+    "target": "Antigravity"
+  },
+  {
+    "voice_triggers": ["windows", "open windows"],
     "action": "open_app",
     "target": "VMware Fusion"
   },
@@ -61,12 +86,12 @@
     "target": "VMware Fusion"
   },
   {
-    "voice_triggers": ["whats up", "whatsapp"],
+    "voice_triggers": ["whats up", "whatsapp", "whats'up", "what's up"],
     "action": "open_app",
     "target": "WhatsApp"
   },
   {
-    "voice_triggers": ["close whatsapp"],
+    "voice_triggers": ["close whatsapp", "close whats up"],
     "action": "close_app",
     "target": "WhatsApp"
   },
@@ -93,11 +118,6 @@
     "action": "media_mute"
   },
   {
-    "voice_triggers": ["close chrome"],
-    "action": "close_app",
-    "target": "Google Chrome"
-  },
-  {
     "voice_triggers": ["finder", "open finder"],
     "action": "open_app",
     "target": "Finder"
@@ -118,13 +138,17 @@
     "target": "Preview"
   },
   {
-    "voice_triggers": ["chat", "open chat", "chat gpt"],
+    "voice_triggers": ["chat", "open chat", "chat gpt", "gpt", "open gpt"],
     "action": "open_app",
     "target": "ChatGPT"
   },
   {
-    "voice_triggers": ["close chat", "close chat gpt"],
+    "voice_triggers": ["close chat", "close chat gpt", "close gpt"],
     "action": "close_app",
     "target": "ChatGPT"
+  },
+  {
+    "voice_triggers": ["print", "print page", "imprimir"],
+    "action": "print_page"
   }
 ]
