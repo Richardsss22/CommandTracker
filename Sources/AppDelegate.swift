@@ -95,7 +95,7 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         let contentView = window.contentView!
         
         // ─── Tabela de Comandos Existentes ───
-        let scrollView = NSScrollView(frame: NSRect(x: 20, y: 140, width: 610, height: 340))
+        let scrollView = NSScrollView(frame: NSRect(x: 20, y: 160, width: 660, height: 320))
         scrollView.autoresizingMask = [.width, .height]
         scrollView.hasVerticalScroller = true
         scrollView.borderType = .bezelBorder
@@ -110,7 +110,7 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         
         let col1 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("trigger"))
         col1.title = "Trigger (Voz)"
-        col1.width = 250
+        col1.width = 280
         tableView.addTableColumn(col1)
         
         let col2 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("action"))
@@ -120,7 +120,7 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         
         let col3 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("target"))
         col3.title = "Alvo"
-        col3.width = 180
+        col3.width = 200
         tableView.addTableColumn(col3)
         
         tableView.dataSource = self
@@ -128,56 +128,61 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         scrollView.documentView = tableView
         contentView.addSubview(scrollView)
         
-        // ─── Painel de Adição Rápida ───
-        let panelY: CGFloat = 20
+        // ─── Painel de Adição / Edição ───
+        let panelY: CGFloat = 15
         
+        // Linha 1: Input (voz) + Ação
         let triggerLabel = NSTextField(labelWithString: "Input (voz):")
-        triggerLabel.frame = NSRect(x: 20, y: panelY + 70, width: 90, height: 20)
+        triggerLabel.frame = NSRect(x: 20, y: panelY + 105, width: 90, height: 20)
         triggerLabel.textColor = .white
         contentView.addSubview(triggerLabel)
         
-        triggerField = NSTextField(frame: NSRect(x: 115, y: panelY + 68, width: 200, height: 24))
-        triggerField.placeholderString = "ex: open spotify"
+        triggerField = NSTextField(frame: NSRect(x: 115, y: panelY + 103, width: 300, height: 24))
+        triggerField.placeholderString = "ex: open spotify, musica"
         triggerField.focusRingType = .none
         contentView.addSubview(triggerField)
         
         let actionLabel = NSTextField(labelWithString: "Ação:")
-        actionLabel.frame = NSRect(x: 325, y: panelY + 70, width: 45, height: 20)
+        actionLabel.frame = NSRect(x: 430, y: panelY + 105, width: 45, height: 20)
         actionLabel.textColor = .white
         contentView.addSubview(actionLabel)
         
-        actionPopup = NSPopUpButton(frame: NSRect(x: 375, y: panelY + 65, width: 160, height: 28))
+        actionPopup = NSPopUpButton(frame: NSRect(x: 480, y: panelY + 100, width: 180, height: 28))
         actionPopup.addItems(withTitles: actionTypes)
         contentView.addSubview(actionPopup)
         
+        // Linha 2: Output (alvo)
         let targetLabel = NSTextField(labelWithString: "Output (alvo):")
-        targetLabel.frame = NSRect(x: 20, y: panelY + 35, width: 100, height: 20)
+        targetLabel.frame = NSRect(x: 20, y: panelY + 70, width: 100, height: 20)
         targetLabel.textColor = .white
         contentView.addSubview(targetLabel)
         
-        targetField = NSTextField(frame: NSRect(x: 115, y: panelY + 33, width: 310, height: 24))
+        targetField = NSTextField(frame: NSRect(x: 115, y: panelY + 68, width: 545, height: 24))
         targetField.placeholderString = "ex: Spotify (app) ou URL"
         targetField.focusRingType = .none
         contentView.addSubview(targetField)
         
-        addBtn = NSButton(frame: NSRect(x: 440, y: panelY + 30, width: 95, height: 30))
-        addBtn.title = "＋ Adicionar"
-        addBtn.bezelStyle = .rounded
-        addBtn.target = self
-        addBtn.action = #selector(saveCommandAction)
-        contentView.addSubview(addBtn)
+        // Linha 3: Botões alinhados à direita
+        let delBtn = NSButton(frame: NSRect(x: 20, y: panelY + 20, width: 100, height: 32))
+        delBtn.title = "🗑 Apagar"
+        delBtn.bezelStyle = .rounded
+        delBtn.target = self
+        delBtn.action = #selector(deleteCommand)
+        contentView.addSubview(delBtn)
         
-        // Botão para limpar campos e criar novo
-        let newBtn = NSButton(frame: NSRect(x: 440, y: panelY + 65, width: 95, height: 30))
+        let newBtn = NSButton(frame: NSRect(x: 450, y: panelY + 20, width: 100, height: 32))
         newBtn.title = "✧ Novo"
         newBtn.bezelStyle = .rounded
         newBtn.target = self
         newBtn.action = #selector(clearFields)
         contentView.addSubview(newBtn)
-        
-        let delBtn = NSButton(frame: NSRect(x: 540, y: panelY + 30, width: 90, height: 30))
-        delBtn.title = "🗑 Apagar"
-        delBtn.bezelStyle = .rounded
+
+        addBtn = NSButton(frame: NSRect(x: 560, y: panelY + 20, width: 120, height: 32))
+        addBtn.title = "＋ Adicionar"
+        addBtn.bezelStyle = .rounded
+        addBtn.target = self
+        addBtn.action = #selector(saveCommandAction)
+        contentView.addSubview(addBtn)
         delBtn.target = self
         delBtn.action = #selector(deleteCommand)
         contentView.addSubview(delBtn)
