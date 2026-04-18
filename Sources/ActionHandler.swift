@@ -241,12 +241,12 @@ class ActionHandler {
             simulateMediaKey(key: 7) // NX_KEYTYPE_MUTE
             
         case "print_page":
-            // Simula Cmd+P na app em primeiro plano
+            // Simula Cmd+Shift+3 para tirar screenshot no macOS
             let src = CGEventSource(stateID: .hidSystemState)
-            let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x23, keyDown: true) // 0x23 = 'p'
-            let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x23, keyDown: false)
-            keyDown?.flags = .maskCommand
-            keyUp?.flags = .maskCommand
+            let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x14, keyDown: true) // 0x14 = '3'
+            let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x14, keyDown: false)
+            keyDown?.flags = [.maskCommand, .maskShift]
+            keyUp?.flags = [.maskCommand, .maskShift]
             keyDown?.post(tap: .cghidEventTap)
             keyUp?.post(tap: .cghidEventTap)
             
