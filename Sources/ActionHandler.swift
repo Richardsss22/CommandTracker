@@ -196,31 +196,46 @@ class ActionHandler {
             }
             
         case "safari_trading":
-            let script = """
-            tell application "Safari"
-                activate
-                set windowCount to count of windows
-                if windowCount is 0 then
-                    make new document with properties {URL:"https://live.trading212.com"}
-                    return
-                end if
-                repeat with v from 1 to windowCount
-                    set tabCount to count of tabs of window v
-                    repeat with i from 1 to tabCount
-                        set theTab to tab i of window v
-                        if URL of theTab contains "trading212.com" then
-                            tell window v
-                                set current tab to theTab
-                            end tell
-                            return
-                        end if
-                    end repeat
-                end repeat
+            // Legacy — redireciona para safari_focus
+            let tradingCmd = CommandDefinition(
+                voiceTriggers: [], action: "safari_focus", target: "trading212.com|https://live.trading212.com"
+            )
+            _executeActionMainThread(tradingCmd)
+            
+        case "safari_focus":
+            // Ação GENÉRICA: Procura separador existente pelo domínio OU abre novo
+            // Target formato: "dominio.com|https://url-completo.com"
+            if let target = cmd.target {
+                let parts = target.split(separator: "|", maxSplits: 1).map(String.init)
+                let searchDomain = parts[0]
+                let fullUrl = parts.count > 1 ? parts[1] : "https://\(searchDomain)"
                 
-                tell window 1 to make new tab with properties {URL:"https://live.trading212.com"}
-            end tell
-            """
-            runAppleScript(script)
+                let script = """
+                tell application "Safari"
+                    activate
+                    set windowCount to count of windows
+                    if windowCount is 0 then
+                        make new document with properties {URL:"\(fullUrl)"}
+                        return
+                    end if
+                    repeat with v from 1 to windowCount
+                        set tabCount to count of tabs of window v
+                        repeat with i from 1 to tabCount
+                            set theTab to tab i of window v
+                            if URL of theTab contains "\(searchDomain)" then
+                                tell window v
+                                    set current tab to theTab
+                                end tell
+                                return
+                            end if
+                        end repeat
+                    end repeat
+                    
+                    tell window 1 to make new tab with properties {URL:"\(fullUrl)"}
+                end tell
+                """
+                runAppleScript(script)
+            }
             
         case "media_play_pause":
             simulateMediaKey(key: 16) // NX_KEYTYPE_PLAY

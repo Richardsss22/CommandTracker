@@ -9,6 +9,16 @@
     "target": "trading212.com"
   },
   {
+    "voice_triggers": ["gemini", "open gemini"],
+    "action": "safari_focus",
+    "target": "gemini.google.com|https://gemini.google.com"
+  },
+  {
+    "voice_triggers": ["close gemini"],
+    "action": "safari_close_tab",
+    "target": "gemini.google.com"
+  },
+  {
     "voice_triggers": ["play music", "pause music", "stop music", "música"],
     "action": "media_play_pause"
   },

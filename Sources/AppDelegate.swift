@@ -61,7 +61,7 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
     var commands: [[String: Any]] = []
     
     let actionTypes = [
-        "open_app", "close_app", "safari_open", "safari_close_tab",
+        "open_app", "close_app", "safari_open", "safari_close_tab", "safari_focus",
         "safari_trading", "media_play_pause", "media_next", "media_previous",
         "media_volume_up", "media_volume_down", "media_mute", "print_page", "run_shortcut"
     ]
