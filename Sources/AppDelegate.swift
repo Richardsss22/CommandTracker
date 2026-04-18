@@ -58,7 +58,9 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
     var triggerField: NSTextField!
     var actionPopup: NSPopUpButton!
     var targetField: NSTextField!
+    var addBtn: NSButton!
     var commands: [[String: Any]] = []
+    var editingRowIndex: Int? = nil
     
     let actionTypes = [
         "open_app", "close_app", "safari_open", "safari_close_tab", "safari_focus",
@@ -158,12 +160,20 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         targetField.focusRingType = .none
         contentView.addSubview(targetField)
         
-        let addBtn = NSButton(frame: NSRect(x: 440, y: panelY + 30, width: 95, height: 30))
+        addBtn = NSButton(frame: NSRect(x: 440, y: panelY + 30, width: 95, height: 30))
         addBtn.title = "＋ Adicionar"
         addBtn.bezelStyle = .rounded
         addBtn.target = self
-        addBtn.action = #selector(addCommand)
+        addBtn.action = #selector(saveCommandAction)
         contentView.addSubview(addBtn)
+        
+        // Botão para limpar campos e criar novo
+        let newBtn = NSButton(frame: NSRect(x: 440, y: panelY + 65, width: 95, height: 30))
+        newBtn.title = "✧ Novo"
+        newBtn.bezelStyle = .rounded
+        newBtn.target = self
+        newBtn.action = #selector(clearFields)
+        contentView.addSubview(newBtn)
         
         let delBtn = NSButton(frame: NSRect(x: 540, y: panelY + 30, width: 90, height: 30))
         delBtn.title = "🗑 Apagar"
@@ -194,25 +204,40 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         ActionHandler.shared.loadCommands()
     }
     
-    @objc func addCommand() {
+    @objc func clearFields() {
+        editingRowIndex = nil
+        triggerField.stringValue = ""
+        targetField.stringValue = ""
+        actionPopup.selectItem(at: 0)
+        addBtn.title = "＋ Adicionar"
+        tableView.deselectAll(nil)
+    }
+    
+    @objc func saveCommandAction() {
         let trigger = triggerField.stringValue.trimmingCharacters(in: .whitespaces)
         let action = actionPopup.titleOfSelectedItem ?? "open_app"
         let target = targetField.stringValue.trimmingCharacters(in: .whitespaces)
         guard !trigger.isEmpty else { return }
         
-        var newCmd: [String: Any] = [
+        var cmdDict: [String: Any] = [
             "voice_triggers": trigger.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces).lowercased() },
             "action": action
         ]
         if !target.isEmpty {
-            newCmd["target"] = target
+            cmdDict["target"] = target
         }
         
-        commands.append(newCmd)
+        if let index = editingRowIndex {
+            // Modo Edição: Substituir
+            commands[index] = cmdDict
+        } else {
+            // Modo Novo: Append
+            commands.append(cmdDict)
+        }
+        
         saveCommands()
         tableView.reloadData()
-        triggerField.stringValue = ""
-        targetField.stringValue = ""
+        clearFields()
     }
     
     @objc func deleteCommand() {
@@ -250,5 +275,25 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
             break
         }
         return cell
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        let row = tableView.selectedRow
+        if row >= 0 {
+            editingRowIndex = row
+            let cmd = commands[row]
+            
+            let triggers = cmd["voice_triggers"] as? [String] ?? []
+            triggerField.stringValue = triggers.joined(separator: ", ")
+            
+            let action = cmd["action"] as? String ?? ""
+            actionPopup.selectItem(withTitle: action)
+            
+            targetField.stringValue = cmd["target"] as? String ?? ""
+            addBtn.title = "💾 Guardar"
+        } else {
+            editingRowIndex = nil
+            addBtn.title = "＋ Adicionar"
+        }
     }
 }

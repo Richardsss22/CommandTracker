@@ -1,164 +1,271 @@
 [
   {
-    "voice_triggers": ["trading", "open trading"],
-    "action": "safari_trading"
+    "action" : "safari_trading",
+    "voice_triggers" : [
+      "trading",
+      "open trading"
+    ]
   },
   {
-    "voice_triggers": ["close trading"],
-    "action": "safari_close_tab",
-    "target": "trading212.com"
+    "action" : "safari_close_tab",
+    "target" : "trading212.com",
+    "voice_triggers" : [
+      "close trading"
+    ]
   },
   {
-    "voice_triggers": ["gemini", "open gemini"],
-    "action": "safari_focus",
-    "target": "gemini.google.com|https://gemini.google.com"
+    "action" : "safari_focus",
+    "target" : "gemini.google.com|https:\/\/gemini.google.com",
+    "voice_triggers" : [
+      "gemini",
+      "open gemini"
+    ]
   },
   {
-    "voice_triggers": ["close gemini"],
-    "action": "safari_close_tab",
-    "target": "gemini.google.com"
+    "action" : "safari_close_tab",
+    "target" : "gemini.google.com",
+    "voice_triggers" : [
+      "close gemini"
+    ]
   },
   {
-    "voice_triggers": ["play music", "pause music", "stop music", "música"],
-    "action": "media_play_pause"
+    "action" : "media_play_pause",
+    "voice_triggers" : [
+      "play music",
+      "pause music",
+      "stop music",
+      "música"
+    ]
   },
   {
-    "voice_triggers": ["next music", "next song", "próxima música"],
-    "action": "media_next"
+    "action" : "media_next",
+    "voice_triggers" : [
+      "next music",
+      "next song",
+      "próxima música"
+    ]
   },
   {
-    "voice_triggers": ["previous song", "previous music", "música anterior", "música de trás"],
-    "action": "media_previous"
+    "action" : "media_previous",
+    "voice_triggers" : [
+      "previous song",
+      "previous music",
+      "música anterior",
+      "música de trás"
+    ]
   },
   {
-    "voice_triggers": ["ist mail", "open ist mail", "tecnico mail", "mail do tecnico"],
-    "action": "safari_open",
-    "target": "https://webmail.tecnico.ulisboa.pt/rc/?_task=mail&_mbox=INBOX"
+    "action" : "safari_close_tab",
+    "target" : "webmail.tecnico.ulisboa.pt",
+    "voice_triggers" : [
+      "close ist mail"
+    ]
   },
   {
-    "voice_triggers": ["close ist mail"],
-    "action": "safari_close_tab",
-    "target": "webmail.tecnico.ulisboa.pt"
+    "action" : "open_app",
+    "target" : "Calendar",
+    "voice_triggers" : [
+      "calendar",
+      "open calendar"
+    ]
   },
   {
-    "voice_triggers": ["calendar", "open calendar"],
-    "action": "open_app",
-    "target": "Calendar"
+    "action" : "close_app",
+    "target" : "Calendar",
+    "voice_triggers" : [
+      "close calendar"
+    ]
   },
   {
-    "voice_triggers": ["close calendar"],
-    "action": "close_app",
-    "target": "Calendar"
+    "action" : "open_app",
+    "target" : "Safari",
+    "voice_triggers" : [
+      "safari",
+      "open safari"
+    ]
   },
   {
-    "voice_triggers": ["safari", "open safari"],
-    "action": "open_app",
-    "target": "Safari"
+    "action" : "close_app",
+    "target" : "Safari",
+    "voice_triggers" : [
+      "close safari"
+    ]
   },
   {
-    "voice_triggers": ["close safari"],
-    "action": "close_app",
-    "target": "Safari"
+    "action" : "safari_open",
+    "target" : "",
+    "voice_triggers" : [
+      "new page",
+      "outra página"
+    ]
   },
   {
-    "voice_triggers": ["new page", "outra página"],
-    "action": "safari_open",
-    "target": ""
+    "action" : "open_app",
+    "target" : "Google Chrome",
+    "voice_triggers" : [
+      "chrome",
+      "open chrome"
+    ]
   },
   {
-    "voice_triggers": ["chrome", "open chrome"],
-    "action": "open_app",
-    "target": "Google Chrome"
+    "action" : "close_app",
+    "target" : "Google Chrome",
+    "voice_triggers" : [
+      "close chrome"
+    ]
   },
   {
-    "voice_triggers": ["close chrome"],
-    "action": "close_app",
-    "target": "Google Chrome"
+    "action" : "open_app",
+    "target" : "Antigravity",
+    "voice_triggers" : [
+      "antigravity",
+      "open antigravity"
+    ]
   },
   {
-    "voice_triggers": ["antigravity", "open antigravity"],
-    "action": "open_app",
-    "target": "Antigravity"
+    "action" : "close_app",
+    "target" : "Antigravity",
+    "voice_triggers" : [
+      "close antigravity"
+    ]
   },
   {
-    "voice_triggers": ["close antigravity"],
-    "action": "close_app",
-    "target": "Antigravity"
+    "action" : "open_app",
+    "target" : "VMware Fusion",
+    "voice_triggers" : [
+      "windows",
+      "open windows"
+    ]
   },
   {
-    "voice_triggers": ["windows", "open windows"],
-    "action": "open_app",
-    "target": "VMware Fusion"
+    "action" : "close_app",
+    "target" : "VMware Fusion",
+    "voice_triggers" : [
+      "close windows"
+    ]
   },
   {
-    "voice_triggers": ["close windows"],
-    "action": "close_app",
-    "target": "VMware Fusion"
+    "action" : "open_app",
+    "target" : "WhatsApp",
+    "voice_triggers" : [
+      "whats up",
+      "whatsapp",
+      "whats'up",
+      "what's up"
+    ]
   },
   {
-    "voice_triggers": ["whats up", "whatsapp", "whats'up", "what's up"],
-    "action": "open_app",
-    "target": "WhatsApp"
+    "action" : "close_app",
+    "target" : "WhatsApp",
+    "voice_triggers" : [
+      "close whatsapp",
+      "close whats up"
+    ]
   },
   {
-    "voice_triggers": ["close whatsapp", "close whats up"],
-    "action": "close_app",
-    "target": "WhatsApp"
+    "action" : "safari_open",
+    "target" : "https:\/\/mail.google.com",
+    "voice_triggers" : [
+      "mail",
+      "open mail"
+    ]
   },
   {
-    "voice_triggers": ["mail", "open mail"],
-    "action": "safari_open",
-    "target": "https://mail.google.com"
+    "action" : "safari_close_tab",
+    "target" : "mail.google.com",
+    "voice_triggers" : [
+      "close mail"
+    ]
   },
   {
-    "voice_triggers": ["close mail"],
-    "action": "safari_close_tab",
-    "target": "mail.google.com"
+    "action" : "media_volume_down",
+    "voice_triggers" : [
+      "volume down",
+      "menos som"
+    ]
   },
   {
-    "voice_triggers": ["volume down", "menos som"],
-    "action": "media_volume_down"
+    "action" : "media_volume_up",
+    "voice_triggers" : [
+      "volume up",
+      "mais som"
+    ]
   },
   {
-    "voice_triggers": ["volume up", "mais som"],
-    "action": "media_volume_up"
+    "action" : "media_mute",
+    "voice_triggers" : [
+      "shut up",
+      "cala te"
+    ]
   },
   {
-    "voice_triggers": ["shut up", "cala te"],
-    "action": "media_mute"
+    "action" : "open_app",
+    "target" : "Finder",
+    "voice_triggers" : [
+      "finder",
+      "open finder"
+    ]
   },
   {
-    "voice_triggers": ["finder", "open finder"],
-    "action": "open_app",
-    "target": "Finder"
+    "action" : "close_app",
+    "target" : "Finder",
+    "voice_triggers" : [
+      "close finder"
+    ]
   },
   {
-    "voice_triggers": ["close finder"],
-    "action": "close_app",
-    "target": "Finder"
+    "action" : "open_app",
+    "target" : "Preview",
+    "voice_triggers" : [
+      "file",
+      "open file",
+      "open file preview",
+      "preview"
+    ]
   },
   {
-    "voice_triggers": ["file", "open file", "open file preview", "preview"],
-    "action": "open_app",
-    "target": "Preview"
+    "action" : "close_app",
+    "target" : "Preview",
+    "voice_triggers" : [
+      "close file",
+      "close preview"
+    ]
   },
   {
-    "voice_triggers": ["close file", "close preview"],
-    "action": "close_app",
-    "target": "Preview"
+    "action" : "open_app",
+    "target" : "ChatGPT",
+    "voice_triggers" : [
+      "chat",
+      "open chat",
+      "chat gpt",
+      "gpt",
+      "open gpt"
+    ]
   },
   {
-    "voice_triggers": ["chat", "open chat", "chat gpt", "gpt", "open gpt"],
-    "action": "open_app",
-    "target": "ChatGPT"
+    "action" : "close_app",
+    "target" : "ChatGPT",
+    "voice_triggers" : [
+      "close chat",
+      "close chat gpt",
+      "close gpt"
+    ]
   },
   {
-    "voice_triggers": ["close chat", "close chat gpt", "close gpt"],
-    "action": "close_app",
-    "target": "ChatGPT"
+    "action" : "print_page",
+    "voice_triggers" : [
+      "print",
+      "print page",
+      "imprimir"
+    ]
   },
   {
-    "voice_triggers": ["print", "print page", "imprimir"],
-    "action": "print_page"
+    "action" : "safari_focus",
+    "target" : "webmail.tecnico.ulisboa.pt",
+    "voice_triggers" : [
+      "ist mail",
+      "webmail",
+      "tecnico mail"
+    ]
   }
 ]

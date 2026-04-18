@@ -74,7 +74,11 @@ class ActionHandler {
         
         for cmd in commands {
             for trigger in cmd.voiceTriggers {
-                if commandText.contains(trigger.lowercased()) {
+                let triggerLower = trigger.lowercased()
+                // Usamos Regex para garantir que o match é de uma "palavra inteira" (boundary \b)
+                // Isto evita que "mail" dispare quando dizes "webmail"
+                let pattern = "\\b\(NSRegularExpression.escapedPattern(for: triggerLower))\\b"
+                if let _ = commandText.range(of: pattern, options: .regularExpression) {
                     if bestMatch == nil || trigger.count > bestMatch!.trigger.count {
                         bestMatch = (cmd, trigger)
                     }
