@@ -1,0 +1,65 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- App Icon Background Gradient -->
+        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1e293b" />
+            <stop offset="100%" stop-color="#0f172a" />
+        </linearGradient>
+        
+        <!-- Sound Wave Gradient -->
+        <linearGradient id="waveGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#3b82f6" /> <!-- Blue -->
+            <stop offset="50%" stop-color="#8b5cf6" /> <!-- Purple -->
+            <stop offset="100%" stop-color="#ec4899" /> <!-- Pink -->
+        </linearGradient>
+
+        <!-- Aro Cinzento Metálico -->
+        <linearGradient id="greyRim" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#cbd5e1" /> <!-- Light slate -->
+            <stop offset="50%" stop-color="#64748b" /> <!-- Mid slate -->
+            <stop offset="100%" stop-color="#334155" /> <!-- Dark slate -->
+        </linearGradient>
+    </defs>
+
+    <!-- Squircle Base (Apple style) com sombras em camadas opacas -->
+    <rect x="24" y="24" width="464" height="464" rx="105" fill="url(#bgGradient)" />
+    <!-- Camada de sombra projetada (Shadow) -->
+    <rect x="24" y="24" width="464" height="464" rx="105" fill="none" stroke="black" stroke-width="8" opacity="0.2" />
+    <!-- Camada de brilho interno (Inner Rim) -->
+    <rect x="24" y="24" width="464" height="464" rx="105" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+
+    <!-- Spotlight Handle (Destacado da lente) -->
+    <g>
+        <path d="M 338 338 L 435 435" stroke="url(#bgGradient)" stroke-width="48" stroke-linecap="round" />
+        <path d="M 338 338 L 435 435" stroke="#334155" stroke-width="40" stroke-linecap="round" />
+        <path d="M 336 336 L 433 433" stroke="rgba(255,255,255,0.1)" stroke-width="40" stroke-linecap="round" />
+    </g>
+
+    <!-- Spotlight Glass/Lens -->
+    <circle cx="220" cy="220" r="130" fill="#020617" stroke="url(#greyRim)" stroke-width="16" />
+    <circle cx="220" cy="220" r="114" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="4" />
+
+    <!-- Glowing Sound Waves (7 Barras Simétricas) -->
+    <g transform="translate(220, 220)">
+        <!-- Barras de Cor Base -->
+        <rect x="-8" y="-70" width="16" height="140" rx="8" fill="url(#waveGradient)" opacity="0.9" />
+        <rect x="-34" y="-50" width="16" height="100" rx="8" fill="url(#waveGradient)" opacity="0.85" />
+        <rect x="18" y="-50" width="16" height="100" rx="8" fill="url(#waveGradient)" opacity="0.85" />
+        <rect x="-60" y="-25" width="16" height="50" rx="8" fill="url(#waveGradient)" opacity="0.7" />
+        <rect x="44" y="-25" width="16" height="50" rx="8" fill="url(#waveGradient)" opacity="0.7" />
+        <rect x="-86" y="-12" width="16" height="24" rx="8" fill="url(#waveGradient)" opacity="0.5" />
+        <rect x="70" y="-12" width="16" height="24" rx="8" fill="url(#waveGradient)" opacity="0.5" />
+        
+        <!-- Camadas de Brilho Interno (Reflexos Brancos) -->
+        <rect x="-8" y="-70" width="4" height="140" rx="2" fill="white" opacity="0.3" />
+        <rect x="-34" y="-50" width="4" height="100" rx="2" fill="white" opacity="0.3" />
+        <rect x="18" y="-50" width="4" height="100" rx="2" fill="white" opacity="0.3" />
+        <rect x="-60" y="-25" width="4" height="50" rx="2" fill="white" opacity="0.3" />
+        <rect x="44" y="-25" width="4" height="50" rx="2" fill="white" opacity="0.3" />
+        <rect x="-86" y="-12" width="4" height="24" rx="2" fill="white" opacity="0.3" />
+        <rect x="70" y="-12" width="4" height="24" rx="2" fill="white" opacity="0.3" />
+    </g>
+
+    <!-- Lens Specular Highlight -->
+    <path d="M 110 170 A 110 110 0 0 1 270 110 A 120 120 0 0 0 110 240 Z" fill="white" opacity="0.05" />
+</svg>

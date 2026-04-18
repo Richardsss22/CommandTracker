@@ -1,0 +1,130 @@
+[
+  {
+    "voice_triggers": ["trading", "open trading"],
+    "action": "safari_trading"
+  },
+  {
+    "voice_triggers": ["close trading"],
+    "action": "safari_close_tab",
+    "target": "trading212.com"
+  },
+  {
+    "voice_triggers": ["play music", "pause music", "stop music", "música"],
+    "action": "media_play_pause"
+  },
+  {
+    "voice_triggers": ["next music", "next song", "próxima música"],
+    "action": "media_next"
+  },
+  {
+    "voice_triggers": ["previous song", "previous music", "música anterior", "música de trás"],
+    "action": "media_previous"
+  },
+  {
+    "voice_triggers": ["ist mail", "open ist mail", "tecnico mail", "mail do tecnico"],
+    "action": "safari_open",
+    "target": "https://webmail.tecnico.ulisboa.pt/rc/?_task=mail&_mbox=INBOX"
+  },
+  {
+    "voice_triggers": ["calendar", "open calendar"],
+    "action": "open_app",
+    "target": "Calendar"
+  },
+  {
+    "voice_triggers": ["safari"],
+    "action": "open_app",
+    "target": "Safari"
+  },
+  {
+    "voice_triggers": ["new page", "outra página"],
+    "action": "safari_open",
+    "target": ""
+  },
+  {
+    "voice_triggers": ["chrome"],
+    "action": "open_app",
+    "target": "Google Chrome"
+  },
+  {
+    "voice_triggers": ["antigravity"],
+    "action": "open_app",
+    "target": "Antigravity"
+  },
+  {
+    "voice_triggers": ["windows"],
+    "action": "open_app",
+    "target": "VMware Fusion"
+  },
+  {
+    "voice_triggers": ["close windows"],
+    "action": "close_app",
+    "target": "VMware Fusion"
+  },
+  {
+    "voice_triggers": ["whats up", "whatsapp"],
+    "action": "open_app",
+    "target": "WhatsApp"
+  },
+  {
+    "voice_triggers": ["close whatsapp"],
+    "action": "close_app",
+    "target": "WhatsApp"
+  },
+  {
+    "voice_triggers": ["mail", "open mail"],
+    "action": "safari_open",
+    "target": "https://mail.google.com"
+  },
+  {
+    "voice_triggers": ["close mail"],
+    "action": "safari_close_tab",
+    "target": "mail.google.com"
+  },
+  {
+    "voice_triggers": ["volume down", "menos som"],
+    "action": "media_volume_down"
+  },
+  {
+    "voice_triggers": ["volume up", "mais som"],
+    "action": "media_volume_up"
+  },
+  {
+    "voice_triggers": ["shut up", "cala te"],
+    "action": "media_mute"
+  },
+  {
+    "voice_triggers": ["close chrome"],
+    "action": "close_app",
+    "target": "Google Chrome"
+  },
+  {
+    "voice_triggers": ["finder", "open finder"],
+    "action": "open_app",
+    "target": "Finder"
+  },
+  {
+    "voice_triggers": ["close finder"],
+    "action": "close_app",
+    "target": "Finder"
+  },
+  {
+    "voice_triggers": ["file", "open file", "open file preview", "preview"],
+    "action": "open_app",
+    "target": "Preview"
+  },
+  {
+    "voice_triggers": ["close file", "close preview"],
+    "action": "close_app",
+    "target": "Preview"
+  },
+  {
+    "voice_triggers": ["chat", "open chat", "chat gpt"],
+    "action": "open_app",
+    "target": "ChatGPT"
+  },
+  {
+    "voice_triggers": ["close chat", "close chat gpt"],
+    "action": "close_app",
+    "target": "ChatGPT"
+  }
+]

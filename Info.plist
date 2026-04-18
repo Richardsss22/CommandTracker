@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.richie.CommandTracker</string>
+    <key>CFBundleName</key>
+    <string>CommandTracker</string>
+    <key>CFBundleVersion</key>
+    <string>1.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>CommandTracker</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Acesso necessário ao microfone captar os comandos de áudio de forma segura e imediata.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Esta app converte os seus comandos de voz para poder abrir outras apps de forma nativa e 100% offline.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>RichieCommandTracker precisa de autorização para executar scripts que fechem/abram separadores no Safari e outras automações.</string>
+    <key>LSUIElement</key>
+    <true/>
+</dict>
+</plist>
