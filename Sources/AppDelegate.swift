@@ -106,22 +106,28 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
         tableView.style = .plain
         tableView.rowHeight = 28
         tableView.gridStyleMask = .solidHorizontalGridLineMask
-        tableView.gridColor = NSColor.gray.withAlphaComponent(0.2)
+        tableView.gridColor = NSColor.gray.withAlphaComponent(0.1)
+        tableView.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
         
         let col1 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("trigger"))
         col1.title = "Trigger (Voz)"
         col1.width = 280
+        col1.resizingMask = .userResizingMask
         tableView.addTableColumn(col1)
         
         let col2 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("action"))
         col2.title = "Ação"
         col2.width = 150
+        col2.resizingMask = .userResizingMask
         tableView.addTableColumn(col2)
         
         let col3 = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("target"))
         col3.title = "Alvo"
         col3.width = 200
+        col3.resizingMask = .userResizingMask
         tableView.addTableColumn(col3)
+        
+        tableView.sizeToFit()
         
         tableView.dataSource = self
         tableView.delegate = self

@@ -109,10 +109,8 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
     }
     
     func stopListening() {
-        if audioEngine.isRunning {
-            audioEngine.stop()
-            audioEngine.inputNode.removeTap(onBus: 0)
-        }
+        audioEngine.stop()
+        audioEngine.inputNode.removeTap(onBus: 0)
         
         recognitionRequest?.endAudio()
         recognitionTask?.cancel()
