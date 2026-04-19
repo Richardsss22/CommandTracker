@@ -82,6 +82,44 @@ class ActionHandler {
             }
         }
         
+        // 1.75 Comando Dinâmico de Fechar Apps (Intercepta "close [app]" para evitar conflitos de substring)
+        let closePrefixes = ["close ", "fecha ", "fechar "]
+        for prefix in closePrefixes {
+            if commandText.hasPrefix(prefix) {
+                // Verifica se o comando inteiro não está explicitamente mapeado (ex: "close trading")
+                var explicitlyMapped = false
+                for cmd in commands {
+                    if cmd.voiceTriggers.contains(where: { $0.lowercased() == commandText }) {
+                        explicitlyMapped = true
+                        break
+                    }
+                }
+                
+                if !explicitlyMapped {
+                    let appAlias = String(commandText.dropFirst(prefix.count)).trimmingCharacters(in: .whitespaces)
+                    if !appAlias.isEmpty {
+                        var targetApp = appAlias
+                        // Procura no JSON para ver se o alias corresponde a um "target" real
+                        for cmd in commands {
+                            if cmd.action == "open_app" || cmd.action == "close_app" {
+                                if cmd.voiceTriggers.contains(where: { $0.lowercased() == appAlias }) {
+                                    if let tgt = cmd.target, !tgt.isEmpty {
+                                        targetApp = tgt
+                                    }
+                                    break
+                                }
+                            }
+                        }
+                        
+                        print("\n🛑 [COMANDO DINÂMICO]: Fechar App -> \(targetApp)")
+                        let tempCmd = CommandDefinition(voiceTriggers: [], action: "close_app", target: targetApp)
+                        executeAction(tempCmd)
+                        return true
+                    }
+                }
+            }
+        }
+        
         // 2. Comandos estáticos do JSON — SEMPRE escolher o trigger MAIS LONGO que faz match
         //    para evitar que "chrome" dispare antes de "close chrome"
         var bestMatch: (cmd: CommandDefinition, trigger: String)?
