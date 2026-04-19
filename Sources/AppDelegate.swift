@@ -14,7 +14,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.image = NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: "CommandTracker")
         }
         
+        let currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
+        let langTitle = currentLang == "pt-PT" ? "Língua: Português (PT)" : "Língua: English (US)"
+        let langMenuItem = NSMenuItem(title: langTitle, action: #selector(toggleLanguage(_:)), keyEquivalent: "l")
+        
         let menu = NSMenu()
+        menu.addItem(langMenuItem)
+        menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Retomar Escuta", action: #selector(resume), keyEquivalent: "r"))
         menu.addItem(NSMenuItem(title: "Pausar", action: #selector(pause), keyEquivalent: "p"))
         menu.addItem(NSMenuItem.separator())
@@ -49,6 +55,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func quit() {
         NSApplication.shared.terminate(nil)
     }
+    
+    @objc func toggleLanguage(_ sender: NSMenuItem) {
+        let currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
+        let newLang = currentLang == "en-US" ? "pt-PT" : "en-US"
+        
+        voiceController.changeLanguage(to: newLang)
+        
+        let newTitle = newLang == "pt-PT" ? "Língua: Português (PT)" : "Língua: English (US)"
+        sender.title = newTitle
+    }
 }
 
 // MARK: - Janela de Edição de Comandos
@@ -65,7 +81,7 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
     let actionTypes = [
         "open_app", "close_app", "safari_open", "safari_close_tab", "safari_focus",
         "safari_trading", "media_play_pause", "media_next", "media_previous",
-        "media_volume_up", "media_volume_down", "media_mute", "print_page", "run_shortcut"
+        "media_volume_up", "media_volume_down", "media_mute", "print_page", "press_enter", "run_shortcut"
     ]
     
     override init() {

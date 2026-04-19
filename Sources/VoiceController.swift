@@ -3,7 +3,7 @@ import Speech
 import AppKit
 
 class VoiceController: NSObject, SFSpeechRecognizerDelegate {
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))! 
+    private var speechRecognizer: SFSpeechRecognizer!
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
@@ -15,7 +15,20 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
     
     override init() {
         super.init()
+        let localeId = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
+        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: localeId)) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
         speechRecognizer.delegate = self
+    }
+    
+    func changeLanguage(to localeIdentifier: String) {
+        UserDefaults.standard.set(localeIdentifier, forKey: "SpeechLanguage")
+        let wasListening = audioEngine.isRunning
+        if wasListening { stopListening() }
+        
+        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: localeIdentifier)) ?? SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+        speechRecognizer.delegate = self
+        
+        if wasListening { startListening() }
     }
     
     func checkPermissionsAndStart() {

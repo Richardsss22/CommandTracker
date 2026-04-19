@@ -68,6 +68,20 @@ class ActionHandler {
             }
         }
         
+        // 1.5. Comando Dinâmico de Escrita (Dictation)
+        let typingPrefixes = ["type ", "escreve ", "escrever "]
+        for prefix in typingPrefixes {
+            if commandText.hasPrefix(prefix) {
+                let textToType = String(commandText.dropFirst(prefix.count)).trimmingCharacters(in: .whitespaces)
+                if !textToType.isEmpty {
+                    print("\n⌨️ [COMANDO DINÂMICO]: Escrever -> \(textToType)")
+                    let script = "tell application \"System Events\" to keystroke \"\(textToType)\""
+                    executeAppleScriptDirectly(script)
+                    return true
+                }
+            }
+        }
+        
         // 2. Comandos estáticos do JSON — SEMPRE escolher o trigger MAIS LONGO que faz match
         //    para evitar que "chrome" dispare antes de "close chrome"
         var bestMatch: (cmd: CommandDefinition, trigger: String)?
@@ -268,6 +282,10 @@ class ActionHandler {
             keyUp?.flags = [.maskCommand, .maskShift]
             keyDown?.post(tap: .cghidEventTap)
             keyUp?.post(tap: .cghidEventTap)
+            
+        case "press_enter":
+            let script = "tell application \"System Events\" to key code 36"
+            runAppleScript(script)
             
         default:
             print("Ação desconhecida ou não implementada no Swift: \(cmd.action)")

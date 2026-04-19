@@ -267,5 +267,12 @@
       "webmail",
       "tecnico mail"
     ]
+  },
+  {
+    "action" : "open_app",
+    "target" : "System Settings",
+    "voice_triggers" : [
+      "settings"
+    ]
   }
 ]
