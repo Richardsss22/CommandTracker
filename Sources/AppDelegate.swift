@@ -81,7 +81,7 @@ class CommandEditorWindow: NSObject, NSTableViewDataSource, NSTableViewDelegate 
     let actionTypes = [
         "open_app", "close_app", "safari_open", "safari_close_tab", "safari_focus",
         "safari_trading", "media_play_pause", "media_next", "media_previous",
-        "media_volume_up", "media_volume_down", "media_mute", "print_page", "press_enter", "run_shortcut"
+        "media_volume_up", "media_volume_down", "media_mute", "print_page", "press_enter", "keyboard_shortcut", "run_shortcut"
     ]
     
     override init() {

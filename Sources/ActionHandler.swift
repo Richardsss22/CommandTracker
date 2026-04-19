@@ -287,6 +287,44 @@ class ActionHandler {
             let script = "tell application \"System Events\" to key code 36"
             runAppleScript(script)
             
+        case "keyboard_shortcut":
+            if let shortcut = cmd.target?.lowercased().replacingOccurrences(of: " ", with: "") {
+                let parts = shortcut.components(separatedBy: "+")
+                var modifiers: [String] = []
+                var key = ""
+                
+                for part in parts {
+                    switch part {
+                    case "cmd", "command": modifiers.append("command down")
+                    case "shift": modifiers.append("shift down")
+                    case "opt", "option", "alt": modifiers.append("option down")
+                    case "ctrl", "control": modifiers.append("control down")
+                    default: key = part
+                    }
+                }
+                
+                let modifierString = modifiers.isEmpty ? "" : " using {\(modifiers.joined(separator: ", "))}"
+                var script = ""
+                
+                let specialKeys: [String: Int] = [
+                    "enter": 36, "return": 36,
+                    "space": 49, "esc": 53, "escape": 53,
+                    "delete": 51, "backspace": 51,
+                    "tab": 48,
+                    "up": 126, "down": 125, "left": 123, "right": 124
+                ]
+                
+                if let code = specialKeys[key] {
+                    script = "tell application \"System Events\" to key code \(code)\(modifierString)"
+                } else if !key.isEmpty {
+                    script = "tell application \"System Events\" to keystroke \"\(key)\"\(modifierString)"
+                }
+                
+                if !script.isEmpty {
+                    runAppleScript(script)
+                }
+            }
+            
         default:
             print("Ação desconhecida ou não implementada no Swift: \(cmd.action)")
         }
