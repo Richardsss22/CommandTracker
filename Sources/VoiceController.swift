@@ -12,7 +12,6 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
     public var isPaused = false
     private var isRestarting = false
     private var isActing = false
-    private var consecutiveErrors = 0
     
     override init() {
         super.init()
@@ -85,7 +84,6 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
                 var isFinal = false
                 
                 if let result = result {
-                    self.consecutiveErrors = 0
                     isFinal = result.isFinal
                     let text = result.bestTranscription.formattedString
                     
@@ -108,11 +106,9 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
                 if let error = error {
                     print("⚠️ Speech Error (\(self.speechRecognizer.locale.identifier)): \(error.localizedDescription)")
                     self.stopListening()
-                    self.consecutiveErrors += 1
                     
                     if !self.isPaused && !isFinal {
-                        let delay = min(pow(2.0, Double(self.consecutiveErrors)), 30.0)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             self.startListening()
                         }
                     }
