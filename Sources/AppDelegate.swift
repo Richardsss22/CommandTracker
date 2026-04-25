@@ -14,8 +14,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.image = NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: "CommandTracker")
         }
         
-        let currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
-        let langTitle = currentLang == "pt-PT" ? "Língua: Português (PT)" : "Língua: English (US)"
+        var currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
+        if currentLang == "pt-PT" {
+            currentLang = "pt-BR"
+            UserDefaults.standard.set(currentLang, forKey: "SpeechLanguage")
+        }
+        
+        let langTitle = currentLang == "pt-BR" ? "Língua: Português" : "Língua: English (US)"
         let langMenuItem = NSMenuItem(title: langTitle, action: #selector(toggleLanguage(_:)), keyEquivalent: "l")
         
         let menu = NSMenu()
@@ -58,11 +63,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc func toggleLanguage(_ sender: NSMenuItem) {
         let currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
-        let newLang = currentLang == "en-US" ? "pt-PT" : "en-US"
+        let newLang = currentLang == "en-US" ? "pt-BR" : "en-US"
         
         voiceController.changeLanguage(to: newLang)
         
-        let newTitle = newLang == "pt-PT" ? "Língua: Português (PT)" : "Língua: English (US)"
+        let newTitle = newLang == "pt-BR" ? "Língua: Português" : "Língua: English (US)"
         sender.title = newTitle
     }
 }

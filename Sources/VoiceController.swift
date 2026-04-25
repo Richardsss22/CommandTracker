@@ -12,6 +12,7 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
     public var isPaused = false
     private var isRestarting = false
     private var isActing = false
+    private var consecutiveErrors = 0
     
     override init() {
         super.init()
@@ -64,8 +65,13 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
             recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
             guard let recognitionRequest = recognitionRequest else { fatalError("Não foi possível criar o request") }
             
-            // Força o processamento EXCLUSIVAMENTE offline/local!
-            recognitionRequest.requiresOnDeviceRecognition = true
+            // Força o processamento local apenas se estiver disponível para a língua selecionada
+            if speechRecognizer.supportsOnDeviceRecognition {
+                recognitionRequest.requiresOnDeviceRecognition = true
+            } else {
+                print("⚠️ Reconhecimento On-Device não disponível para \(speechRecognizer.locale.identifier). Usando modo servidor.")
+                recognitionRequest.requiresOnDeviceRecognition = false
+            }
             
             let inputNode = audioEngine.inputNode
             let recordingFormat = inputNode.outputFormat(forBus: 0)
@@ -81,6 +87,7 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
                 var isFinal = false
                 
                 if let result = result {
+                    self.consecutiveErrors = 0
                     isFinal = result.isFinal
                     let text = result.bestTranscription.formattedString
                     
@@ -100,10 +107,14 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
                     }
                 }
                 
-                if error != nil {
+                if let error = error {
+                    print("⚠️ Speech Error (\(self.speechRecognizer.locale.identifier)): \(error.localizedDescription)")
                     self.stopListening()
+                    self.consecutiveErrors += 1
+                    
                     if !self.isPaused && !isFinal {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        let delay = min(pow(2.0, Double(self.consecutiveErrors)), 30.0)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                             self.startListening()
                         }
                     }
