@@ -8,6 +8,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         _ = ActionHandler.shared // Acordar logs de comandos
         
+        // Verifica Acessibilidade (necessário para simular teclado via AppleScript)
+        let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String : true]
+        AXIsProcessTrustedWithOptions(options)
+        
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
             // Utilizamos 'waveform' para não ser confundido com o microfone laranja do macOS
