@@ -64,10 +64,7 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
             recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
             guard let recognitionRequest = recognitionRequest else { fatalError("Não foi possível criar o request") }
             
-            // Privacidade Máxima: Força SEMPRE o processamento local, sem usar os servidores da Apple.
-            if !speechRecognizer.supportsOnDeviceRecognition {
-                print("⚠️ AVISO: A língua '\(speechRecognizer.locale.identifier)' não tem o pacote offline instalado no macOS. A App poderá falhar a escutar se o pacote não for descarregado nas Definições do Sistema -> Teclado -> Ditado.")
-            }
+            // Força o processamento EXCLUSIVAMENTE offline/local!
             recognitionRequest.requiresOnDeviceRecognition = true
             
             let inputNode = audioEngine.inputNode
@@ -103,12 +100,10 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
                     }
                 }
                 
-                if let error = error {
-                    print("⚠️ Speech Error (\(self.speechRecognizer.locale.identifier)): \(error.localizedDescription)")
+                if error != nil {
                     self.stopListening()
-                    
                     if !self.isPaused && !isFinal {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                             self.startListening()
                         }
                     }

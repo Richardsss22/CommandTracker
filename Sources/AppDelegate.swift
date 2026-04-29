@@ -8,23 +8,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         _ = ActionHandler.shared // Acordar logs de comandos
         
-        // Verifica Acessibilidade (necessário para simular teclado via AppleScript)
-        let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String : true]
-        AXIsProcessTrustedWithOptions(options)
-        
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
             // Utilizamos 'waveform' para não ser confundido com o microfone laranja do macOS
             button.image = NSImage(systemSymbolName: "waveform.circle.fill", accessibilityDescription: "CommandTracker")
         }
         
-        var currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
-        if currentLang == "pt-PT" {
-            currentLang = "pt-BR"
-            UserDefaults.standard.set(currentLang, forKey: "SpeechLanguage")
-        }
-        
-        let langTitle = currentLang == "pt-BR" ? "Língua: Português" : "Língua: English (US)"
+        let currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
+        let langTitle = currentLang == "pt-PT" ? "Língua: Português (PT)" : "Língua: English (US)"
         let langMenuItem = NSMenuItem(title: langTitle, action: #selector(toggleLanguage(_:)), keyEquivalent: "l")
         
         let menu = NSMenu()
@@ -67,11 +58,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc func toggleLanguage(_ sender: NSMenuItem) {
         let currentLang = UserDefaults.standard.string(forKey: "SpeechLanguage") ?? "en-US"
-        let newLang = currentLang == "en-US" ? "pt-BR" : "en-US"
+        let newLang = currentLang == "en-US" ? "pt-PT" : "en-US"
         
         voiceController.changeLanguage(to: newLang)
         
-        let newTitle = newLang == "pt-BR" ? "Língua: Português" : "Língua: English (US)"
+        let newTitle = newLang == "pt-PT" ? "Língua: Português (PT)" : "Língua: English (US)"
         sender.title = newTitle
     }
 }
