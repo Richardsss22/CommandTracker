@@ -52,13 +52,16 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
         }
     }
     
-    func startListening() {
+    @objc func startListening() {
         if isPaused || isRestarting { return }
         isRestarting = true
         isActing = false
         // Garantir que a sessão anterior está limpa antes de reiniciar
         stopListening()
         isRestarting = false
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(startListening), object: nil)
+        
         print("\n🎙 Em escuta StandBy contínua...")
         do {
             recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
@@ -77,34 +80,31 @@ class VoiceController: NSObject, SFSpeechRecognizerDelegate {
             audioEngine.prepare()
             try audioEngine.start()
             
-            recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { result, error in
-                var isFinal = false
+            recognitionTask = speechRecognizer.recognitionTask(with: recognitionRequest) { [weak self] result, error in
+                guard let self = self else { return }
                 
-                if let result = result {
-                    isFinal = result.isFinal
-                    let text = result.bestTranscription.formattedString
+                DispatchQueue.main.async {
+                    var isFinal = false
                     
-                    print("🗣 [StandBy]: \(text)")
-                    
-                    if !self.isActing {
-                        if ActionHandler.shared.processContinuousCommand(text) {
-                            self.isActing = true
-                            self.recognitionRequest?.endAudio()
+                    if let result = result {
+                        isFinal = result.isFinal
+                        let text = result.bestTranscription.formattedString
+                        
+                        print("🗣 [StandBy]: \(text)")
+                        
+                        if !self.isActing {
+                            if ActionHandler.shared.processContinuousCommand(text) {
+                                self.isActing = true
+                                self.recognitionRequest?.endAudio()
+                            }
                         }
                     }
                     
-                    if isFinal {
-                        DispatchQueue.main.async {
-                            self.startListening()
-                        }
-                    }
-                }
-                
-                if error != nil {
-                    self.stopListening()
-                    if !self.isPaused && !isFinal {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            self.startListening()
+                    if error != nil || isFinal {
+                        self.stopListening()
+                        if !self.isPaused {
+                            NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(self.startListening), object: nil)
+                            self.perform(#selector(self.startListening), with: nil, afterDelay: 0.2)
                         }
                     }
                 }

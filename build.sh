@@ -26,8 +26,7 @@ if [ $? -eq 0 ]; then
     echo "A assinar aplicação para permitir Acessibilidade/Automação..."
     codesign --entitlements entitlements.plist --force --deep --sign - "${BUNDLE_DIR}"
     
-    echo "A forçar limpeza de cache de permissões do macOS..."
-    tccutil reset All "com.richie.CommandTracker"
+    
     
     echo "Sucesso! Aplicação '$BUNDLE_DIR' pronta a executar no seu sistema."
 else
