@@ -8,6 +8,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         _ = ActionHandler.shared // Acordar logs de comandos
         
+        // Verifica Acessibilidade (necessário para simular comandos de Media via CGEvent)
+        let options: NSDictionary = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String : true]
+        let accessEnabled = AXIsProcessTrustedWithOptions(options)
+        
+        if !accessEnabled {
+            print("⚠️ Acessibilidade não autorizada. Por favor ative nas Definições do Sistema.")
+            let alert = NSAlert()
+            alert.messageText = "Permissão de Acessibilidade Necessária"
+            alert.informativeText = "O CommandTracker precisa de acesso à Acessibilidade para conseguir usar os atalhos de música (Play, Next, Previous).\n\nPor favor, ative a permissão nas Definições do Sistema -> Privacidade e Segurança -> Acessibilidade e reinicie a App."
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
+        
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
             // Utilizamos 'waveform' para não ser confundido com o microfone laranja do macOS
