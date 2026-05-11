@@ -294,22 +294,22 @@ class ActionHandler {
             }
             
         case "media_play_pause":
-            runAppleScript("tell application \"System Events\" to key code 16")
+            simulateMediaKey(key: 16) // NX_KEYTYPE_PLAY
             
         case "media_next":
-            runAppleScript("tell application \"System Events\" to key code 17")
+            simulateMediaKey(key: 17) // NX_KEYTYPE_NEXT
             
         case "media_previous":
-            runAppleScript("tell application \"System Events\" to key code 18")
+            simulateMediaKey(key: 18) // NX_KEYTYPE_PREVIOUS
             
         case "media_volume_up":
-            runAppleScript("tell application \"System Events\" to key code 0")
+            runAppleScript("set volume output volume ((output volume of (get volume settings)) + 6.25)")
             
         case "media_volume_down":
-            runAppleScript("tell application \"System Events\" to key code 1")
+            runAppleScript("set volume output volume ((output volume of (get volume settings)) - 6.25)")
             
         case "media_mute":
-            runAppleScript("tell application \"System Events\" to key code 7")
+            runAppleScript("set volume output muted (not (output muted of (get volume settings)))")
             
         case "print_page":
             runAppleScript("tell application \"System Events\" to keystroke \"3\" using {command down, shift down}")
@@ -378,4 +378,12 @@ class ActionHandler {
         }
     }
     
+    private func simulateMediaKey(key: Int) {
+        let HIDPostAuxKey = 8
+        let evtDown = NSEvent.otherEvent(with: .systemDefined, location: .zero, modifierFlags: NSEvent.ModifierFlags(rawValue: 0xA00), timestamp: 0, windowNumber: 0, context: nil, subtype: Int16(HIDPostAuxKey), data1: Int((key << 16) | ((0xa) << 8)), data2: -1)
+        let evtUp = NSEvent.otherEvent(with: .systemDefined, location: .zero, modifierFlags: NSEvent.ModifierFlags(rawValue: 0xB00), timestamp: 0, windowNumber: 0, context: nil, subtype: Int16(HIDPostAuxKey), data1: Int((key << 16) | ((0xb) << 8)), data2: -1)
+        
+        evtDown?.cgEvent?.post(tap: .cghidEventTap)
+        evtUp?.cgEvent?.post(tap: .cghidEventTap)
+    }
 }
