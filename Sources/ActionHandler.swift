@@ -294,32 +294,25 @@ class ActionHandler {
             }
             
         case "media_play_pause":
-            simulateMediaKey(key: 16) // NX_KEYTYPE_PLAY
+            runAppleScript("tell application \"System Events\" to key code 16")
             
         case "media_next":
-            simulateMediaKey(key: 17) // NX_KEYTYPE_NEXT
+            runAppleScript("tell application \"System Events\" to key code 17")
             
         case "media_previous":
-            simulateMediaKey(key: 18) // NX_KEYTYPE_PREVIOUS
+            runAppleScript("tell application \"System Events\" to key code 18")
             
         case "media_volume_up":
-            simulateMediaKey(key: 0) // NX_KEYTYPE_SOUND_UP
+            runAppleScript("tell application \"System Events\" to key code 0")
             
         case "media_volume_down":
-            simulateMediaKey(key: 1) // NX_KEYTYPE_SOUND_DOWN
+            runAppleScript("tell application \"System Events\" to key code 1")
             
         case "media_mute":
-            simulateMediaKey(key: 7) // NX_KEYTYPE_MUTE
+            runAppleScript("tell application \"System Events\" to key code 7")
             
         case "print_page":
-            // Simula Cmd+Shift+3 para tirar screenshot no macOS
-            let src = CGEventSource(stateID: .hidSystemState)
-            let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x14, keyDown: true) // 0x14 = '3'
-            let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x14, keyDown: false)
-            keyDown?.flags = [.maskCommand, .maskShift]
-            keyUp?.flags = [.maskCommand, .maskShift]
-            keyDown?.post(tap: .cghidEventTap)
-            keyUp?.post(tap: .cghidEventTap)
+            runAppleScript("tell application \"System Events\" to keystroke \"3\" using {command down, shift down}")
             
         case "press_enter":
             let script = "tell application \"System Events\" to key code 36"
@@ -385,12 +378,4 @@ class ActionHandler {
         }
     }
     
-    private func simulateMediaKey(key: Int) {
-        let HIDPostAuxKey = 8
-        let evtDown = NSEvent.otherEvent(with: .systemDefined, location: .zero, modifierFlags: NSEvent.ModifierFlags(rawValue: 0xA00), timestamp: 0, windowNumber: 0, context: nil, subtype: Int16(HIDPostAuxKey), data1: Int((key << 16) | ((0xa) << 8)), data2: -1)
-        let evtUp = NSEvent.otherEvent(with: .systemDefined, location: .zero, modifierFlags: NSEvent.ModifierFlags(rawValue: 0xB00), timestamp: 0, windowNumber: 0, context: nil, subtype: Int16(HIDPostAuxKey), data1: Int((key << 16) | ((0xb) << 8)), data2: -1)
-        
-        evtDown?.cgEvent?.post(tap: .cghidEventTap)
-        evtUp?.cgEvent?.post(tap: .cghidEventTap)
-    }
 }
