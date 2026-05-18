@@ -252,11 +252,20 @@
     ]
   },
   {
-    "action" : "print_page",
+    "action" : "print_document",
     "voice_triggers" : [
       "print",
       "print page",
-      "imprimir"
+      "imprimir",
+      "imprimir pagina"
+    ]
+  },
+  {
+    "action" : "screenshot",
+    "voice_triggers" : [
+      "screenshot",
+      "take screenshot",
+      "captura de ecra"
     ]
   },
   {

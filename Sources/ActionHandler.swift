@@ -311,7 +311,7 @@ class ActionHandler {
         case "media_mute":
             runAppleScript("set volume output muted (not (output muted of (get volume settings)))")
             
-        case "print_page":
+        case "screenshot":
             let src = CGEventSource(stateID: .hidSystemState)
             let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x14, keyDown: true) // 0x14 = '3'
             let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x14, keyDown: false)
@@ -319,6 +319,9 @@ class ActionHandler {
             keyUp?.flags = [.maskCommand, .maskShift]
             keyDown?.post(tap: .cghidEventTap)
             keyUp?.post(tap: .cghidEventTap)
+            
+        case "print_document":
+            runAppleScript("tell application \"System Events\" to keystroke \"p\" using command down")
             
         case "press_enter":
             let script = "tell application \"System Events\" to key code 36"
