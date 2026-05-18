@@ -252,17 +252,17 @@
     ]
   },
   {
-    "action" : "print_document",
+    "action" : "open_app",
     "voice_triggers" : [
-      "print",
       "print page",
       "imprimir",
       "imprimir pagina"
     ]
   },
   {
-    "action" : "screenshot",
+    "action" : "print_page",
     "voice_triggers" : [
+      "print",
       "screenshot",
       "take screenshot",
       "captura de ecra"
